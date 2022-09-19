@@ -3,6 +3,7 @@ import me.sargunvohra.lib.pokekotlin.client.PokeApiClient;
 import me.sargunvohra.lib.pokekotlin.model.Pokemon;
 import me.sargunvohra.lib.pokekotlin.model.PokemonSprites;
 import me.sargunvohra.lib.pokekotlin.model.PokemonType;
+import twitter4j.Twitter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,8 +36,10 @@ public class PokemonAPI {
 
 
         System.out.println(randomPokemon);
+
     }
 
+    // Gets the front and back sprites only
     private static List<String> getSprites (PokemonSprites sprites){
         List<String> spriteList = new ArrayList<String>();
 
@@ -46,7 +49,7 @@ public class PokemonAPI {
         return spriteList;
     }
 
-
+    // Gets all the available types and adds it to a List
     private static List<String> getTypes(List<PokemonType> types) {
         List<String> nameOfTypes = new ArrayList<String>();
 

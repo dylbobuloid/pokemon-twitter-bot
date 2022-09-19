@@ -7,6 +7,18 @@
     <groupId>org.example</groupId>
     <artifactId>pokemon-twitter-bot</artifactId>
     <version>1.0-SNAPSHOT</version>
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <source>16</source>
+                    <target>16</target>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
     <repositories>
         <repository>
             <id>jitpack.io</id>
@@ -15,6 +27,12 @@
     </repositories>
 
     <dependencies>
+        <dependency>
+            <groupId>org.twitter4j</groupId>
+            <artifactId>twitter4j-stream</artifactId>
+            <version>4.0.6</version>
+        </dependency>
+
         <dependency>
             <groupId>com.github.PokeAPI</groupId>
             <artifactId>pokekotlin</artifactId>
