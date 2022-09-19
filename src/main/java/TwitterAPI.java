@@ -3,6 +3,8 @@ import twitter4j.Twitter;
 import twitter4j.TwitterException;
 import twitter4j.TwitterFactory;
 
+import java.io.File;
+
 public class TwitterAPI {
 
     private static Twitter getTwitterinstance() {
@@ -16,7 +18,7 @@ public class TwitterAPI {
         return status.getText();
     }
 
-    private static void tweetContents(String message) throws TwitterException{
+    public static void tweetContents(String message) throws TwitterException{
         createTweet(message);
 
     }
