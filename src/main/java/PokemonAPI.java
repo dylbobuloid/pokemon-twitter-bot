@@ -3,16 +3,15 @@ import me.sargunvohra.lib.pokekotlin.client.PokeApiClient;
 import me.sargunvohra.lib.pokekotlin.model.Pokemon;
 import me.sargunvohra.lib.pokekotlin.model.PokemonSprites;
 import me.sargunvohra.lib.pokekotlin.model.PokemonType;
-import twitter4j.Twitter;
 import twitter4j.TwitterException;
-
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
 
 public class PokemonAPI {
-    public static void main(String[] args) throws TwitterException {
+    public static void main(String[] args) throws TwitterException, URISyntaxException {
 
         // Creating a PokemonAPI instance
         PokeApi pokeApi = new PokeApiClient();
@@ -30,6 +29,7 @@ public class PokemonAPI {
         // Retrieving the JSON information on this endpoint
         Pokemon randomPokemon = pokeApi.getPokemon(randomId);
 
+
         List<String> pokemonType = getTypes(randomPokemon.getTypes());
         List<String> pokemonSprites = getSprites(randomPokemon.getSprites());
         PokemonData currentPokemon = new PokemonData(randomPokemon.getId(), randomPokemon.getName(), pokemonType, pokemonSprites);
@@ -41,14 +41,15 @@ public class PokemonAPI {
     }
 
     // Creates the Tweet using the Pokémon Data
-    private static void createTweet(PokemonData randomPokemonData) throws TwitterException {
-        TwitterAPI.tweetContents(randomPokemonData.toString());
+    private static void createTweet(PokemonData randomPokemonData) throws TwitterException, URISyntaxException {
+        TwitterAPI.tweetContents(randomPokemonData.toString(), randomPokemonData.getPokemonSpritesToFile().get(0), randomPokemonData.getPokemonSpritesToFile().get(1));
         System.out.println("The tweet has been created");
     }
 
     // Gets the front and back sprites only
     private static List<String> getSprites (PokemonSprites sprites){
         List<String> spriteList = new ArrayList<String>();
+
 
         spriteList.add(sprites.getFrontDefault());
         spriteList.add(sprites.getFrontShiny());
