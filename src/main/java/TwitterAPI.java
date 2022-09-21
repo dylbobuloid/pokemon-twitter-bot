@@ -5,8 +5,8 @@ import java.io.File;
 public class TwitterAPI {
 
     private static Twitter getTwitterinstance() {
-        Twitter twitter = TwitterFactory.getSingleton();
-        return twitter;
+        return TwitterFactory.getSingleton();
+
     }
 
     private static void createTweet(String tweet, File front, File frontShiny) throws TwitterException {
@@ -25,9 +25,8 @@ public class TwitterAPI {
         // Creating a new tweet with the message and mediaIds
         StatusUpdate statusUpdate = new StatusUpdate(tweet);
         statusUpdate.setMediaIds(mediaIds);
-        Status status = twitter.updateStatus(statusUpdate);
+        twitter.updateStatus(statusUpdate);
 
-        //return status.getText();
     }
 
     public static void tweetContents(String message, File front, File back) throws TwitterException{
