@@ -4,14 +4,25 @@ import me.sargunvohra.lib.pokekotlin.model.Pokemon;
 import me.sargunvohra.lib.pokekotlin.model.PokemonSprites;
 import me.sargunvohra.lib.pokekotlin.model.PokemonType;
 import twitter4j.TwitterException;
-import java.net.URISyntaxException;
+import javax.imageio.ImageIO;
+import java.awt.*;
+import java.awt.image.RenderedImage;
+import java.io.File;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
 
 public class PokemonAPI {
-    public static void main(String[] args) throws TwitterException, URISyntaxException {
+    public static void main(String[] args) throws TwitterException {
+
+        PokemonData newPokemon = fetchPokemon();
+        createTweet(newPokemon);
+
+    }
+
+    private static PokemonData fetchPokemon () {
 
         // Creating a PokemonAPI instance
         PokeApi pokeApi = new PokeApiClient();
@@ -29,40 +40,66 @@ public class PokemonAPI {
         // Retrieving the JSON information on this endpoint
         Pokemon randomPokemon = pokeApi.getPokemon(randomId);
 
-
         List<String> pokemonType = getTypes(randomPokemon.getTypes());
-        List<String> pokemonSprites = getSprites(randomPokemon.getSprites());
-        PokemonData currentPokemon = new PokemonData(randomPokemon.getId(), randomPokemon.getName(), pokemonType, pokemonSprites);
+        List<File> pokemonSprites = getSprites(randomPokemon.getSprites());
 
-        createTweet(currentPokemon);
-
-        //System.out.println(randomPokemon);
-
+        return new PokemonData(randomPokemon.getId(), randomPokemon.getName(), pokemonType, pokemonSprites);
     }
 
     // Creates the Tweet using the Pokémon Data
-    private static void createTweet(PokemonData randomPokemonData) throws TwitterException, URISyntaxException {
-        TwitterAPI.tweetContents(randomPokemonData.toString(), randomPokemonData.getPokemonSpritesToFile().get(0), randomPokemonData.getPokemonSpritesToFile().get(1));
+    private static void createTweet(PokemonData randomPokemonData) throws TwitterException {
+        TwitterAPI.tweetContents(randomPokemonData.toString(), randomPokemonData.getPokemonSprites().get(0), randomPokemonData.getPokemonSprites().get(1));
         System.out.println("The tweet has been created");
     }
 
     // Gets the front and back sprites only
-    private static List<String> getSprites (PokemonSprites sprites){
-        List<String> spriteList = new ArrayList<String>();
+    private static List<File> getSprites (PokemonSprites sprites) {
+        List<String> spriteList = new ArrayList<>();
 
 
         spriteList.add(sprites.getFrontDefault());
         spriteList.add(sprites.getFrontShiny());
 
-        return spriteList;
+        return getPokemonSpritesToFile(spriteList);
+    }
+
+    // Converts the image URL String to an image
+    private static List<File> getPokemonSpritesToFile(List<String> pokemonSprites) {
+
+        String spriteLocalStorage = System.getProperty("spriteLocalStorage");
+
+        //
+        List<File> spriteFiles = new ArrayList<>();
+
+        try
+        {
+            //Converting string to image and then writing the image into a File
+            Image frontSprite = ImageIO.read(new URL(pokemonSprites.get(0)));
+            Image frontShinySprite = ImageIO.read(new URL(pokemonSprites.get(1)));
+            ImageIO.write((RenderedImage) frontSprite, "png", new File(spriteLocalStorage + "frontSprite.png"));
+            ImageIO.write((RenderedImage) frontShinySprite, "png", new File(spriteLocalStorage + "frontShinySprite.png"));
+
+            // Saving image to local file storage
+            File frontSpriteImage = new File(spriteLocalStorage + "frontSprite.png");
+            File frontShinySpriteImage = new File(spriteLocalStorage + "frontSprite.png");
+
+            spriteFiles.add(0, frontSpriteImage);
+            spriteFiles.add(1, frontShinySpriteImage);
+        }
+        catch (Exception e)
+        {
+            System.err.println("Error writing image to a file!");
+        }
+
+        return spriteFiles;
     }
 
     // Gets all the available types and adds it to a List
     private static List<String> getTypes(List<PokemonType> types) {
-        List<String> nameOfTypes = new ArrayList<String>();
+        List<String> nameOfTypes = new ArrayList<>();
 
-        for (int i = 0; i<types.size(); i++){
-            nameOfTypes.add(types.get(i).getType().getName());
+        for (PokemonType type : types) {
+            nameOfTypes.add(type.getType().getName());
 
         }
     return nameOfTypes;
