@@ -66,7 +66,7 @@ public class PokemonAPI {
     // Converts the image URL String to an image
     private static List<File> getPokemonSpritesToFile(List<String> pokemonSprites) {
 
-        String spriteLocalStorage = System.getProperty("spriteLocalStorage");
+        String spriteLocalStorage = System.getenv("spriteLocalStorage");
 
         //
         List<File> spriteFiles = new ArrayList<>();
