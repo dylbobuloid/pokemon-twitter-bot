@@ -1,0 +1,1 @@
+worker: java -jar target/pokemon-twitter-bot.jar
