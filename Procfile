@@ -1,1 +1,1 @@
-worker: java -jar target/pokemon-twitter-bot.jar
+worker: java -jar target/pokemon-twitter-bot-1.0-SNAPSHOT-jar-with-dependencies.jar
