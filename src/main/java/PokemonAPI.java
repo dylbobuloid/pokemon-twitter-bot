@@ -75,13 +75,14 @@ public class PokemonAPI {
         {
             //Converting string to image and then writing the image into a File
             Image frontSprite = ImageIO.read(new URL(pokemonSprites.get(0)));
+            System.out.println("");
             Image frontShinySprite = ImageIO.read(new URL(pokemonSprites.get(1)));
             ImageIO.write((RenderedImage) frontSprite, "png", new File(spriteLocalStorage + "frontSprite.png"));
             ImageIO.write((RenderedImage) frontShinySprite, "png", new File(spriteLocalStorage + "frontShinySprite.png"));
 
             // Saving image to local file storage
             File frontSpriteImage = new File(spriteLocalStorage + "frontSprite.png");
-            File frontShinySpriteImage = new File(spriteLocalStorage + "frontSprite.png");
+            File frontShinySpriteImage = new File(spriteLocalStorage + "frontShinySprite.png");
 
             spriteFiles.add(0, frontSpriteImage);
             spriteFiles.add(1, frontShinySpriteImage);
